@@ -57,6 +57,40 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        mission: {
+          bg: "hsl(var(--mission-bg))",
+          surface: "hsl(var(--mission-surface))",
+          "surface-hover": "hsl(var(--mission-surface-hover))",
+          border: "hsl(var(--mission-border))",
+          "text-primary": "hsl(var(--mission-text-primary))",
+          "text-secondary": "hsl(var(--mission-text-secondary))",
+          "text-muted": "hsl(var(--mission-text-muted))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning))",
+          foreground: "hsl(var(--warning-foreground))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info))",
+          foreground: "hsl(var(--info-foreground))",
+        },
+        buy: "hsl(var(--buy))",
+        sell: "hsl(var(--sell))",
+        neutral: "hsl(var(--neutral))",
+      },
+      backgroundImage: {
+        "gradient-primary": "var(--gradient-primary)",
+        "gradient-surface": "var(--gradient-surface)",
+        "gradient-accent": "var(--gradient-accent)",
+      },
+      boxShadow: {
+        mission: "var(--shadow-mission)",
+        "mission-lg": "var(--shadow-mission-lg)",
+        glow: "var(--shadow-glow)",
       },
       borderRadius: {
         lg: "var(--radius)",
