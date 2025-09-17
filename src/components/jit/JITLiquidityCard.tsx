@@ -104,6 +104,18 @@ export function JITLiquidityCard() {
     { success: "Withdrawal Successful", error: "Withdrawal Failed", description: `Withdrew ${amount} STT from JIT vault` }
   );
 
+  const onMint = () => handleTransaction(
+    () => {}, // No loading state needed for this
+    {
+      address: ADDRESSES.underlying as `0x${string}`,
+      abi: TOKEN_ABI,
+      functionName: "mint",
+      // Mints 100 tokens to the connected user's address
+      args: [address as `0x${string}`, parseEther("100")],
+    },
+    { success: "Tokens Minted!", error: "Mint Failed", description: `You received 100 STT` }
+  );
+
   const formatBalance = (balance: bigint | undefined) => {
     if (balance === undefined) return "0.0000";
     return parseFloat(formatEther(balance)).toFixed(4);
@@ -163,6 +175,12 @@ export function JITLiquidityCard() {
               min="0"
             />
           </div>
+
+          {/* Faucet Button for Testers */}
+          <Button onClick={onMint} variant="secondary" className="gap-2 w-full mb-4">
+            <Zap className="w-4 h-4" />
+            Get 100 Test STT
+          </Button>
 
           <div className="grid grid-cols-1 gap-3">
             <Button onClick={onApprove} disabled={isApproving || !amount} variant="outline" className="gap-2">
