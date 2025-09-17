@@ -1,35 +1,39 @@
-"use client";
+import { useEffect } from 'react';
+import { useAuctionStore } from '../stores/auctionStore';
 
-import { useEffect, useRef } from "react";
-import { useAuctionStore, Auction } from "@/stores/auctionStore";
+const WS_URL = 'ws://localhost:8080';
 
-export function useAuctionSocket(url = import.meta.env.VITE_WS_URL || "ws://localhost:8080") {
-  const { updateAuctions } = useAuctionStore();
-  const wsRef = useRef<WebSocket | null>(null);
+export const useAuctionSocket = () => {
+  const setAuctions = useAuctionStore((state) => state.setAuctions);
 
   useEffect(() => {
-    const ws = new WebSocket(url);
-    wsRef.current = ws;
+    const ws = new WebSocket(WS_URL);
 
-    ws.onopen = () => console.log("WS connected");
-    ws.onerror = (e) => console.error("WS error", e);
+    ws.onopen = () => {
+      console.log('Connected to auction socket');
+    };
 
-    ws.onmessage = (ev) => {
+    ws.onmessage = (event) => {
       try {
-        const msg = JSON.parse(ev.data);
-        if (msg.type === "NEW_BID") {
-          updateAuctions(msg.payload as Auction[]);
+        const data = JSON.parse(event.data);
+        if (data.type === 'AUCTION_UPDATE') {
+          setAuctions(data.payload);
         }
-      } catch (e) {
-        console.error("WS payload error", e);
+      } catch (error) {
+        console.error('Error parsing auction data:', error);
       }
     };
 
-    return () => ws.close();
-  }, [url, updateAuctions]);
+    ws.onclose = () => {
+      console.log('Disconnected from auction socket');
+    };
 
-  return {
-    auctions: useAuctionStore((s) => s.auctions),
-    completed: useAuctionStore((s) => s.completed),
-  };
-}
+    ws.onerror = (error) => {
+      console.error('Auction socket error:', error);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [setAuctions]);
+};

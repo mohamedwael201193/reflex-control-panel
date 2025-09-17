@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,34 +10,34 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Mission Control Dark Theme */
-    --background: 220 14% 6%;
-    --foreground: 210 40% 98%;
+    /* Somnia-Inspired Theme */
+    --background: 216 33% 8%;
+    --foreground: 210 67% 97%; /* text-primary */
 
-    --card: 224 14% 8%;
-    --card-foreground: 210 40% 98%;
+    --card: 216 21% 11%; /* surface */
+    --card-foreground: 210 67% 97%; /* text-primary */
 
-    --popover: 224 14% 8%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 216 21% 11%; /* surface */
+    --popover-foreground: 210 67% 97%; /* text-primary */
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 222 84% 5%;
+    --primary: 200 100% 50%; /* #00A3FF */
+    --primary-foreground: 216 33% 8%; /* background */
 
-    --secondary: 220 13% 18%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 271 76% 53%; /* #8A2BE2 */
+    --secondary-foreground: 210 67% 97%; /* text-primary */
 
-    --muted: 220 13% 14%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 216 21% 11%; /* surface */
+    --muted-foreground: 212 9% 58%; /* text-secondary */
 
-    --accent: 173 80% 40%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 180 100% 50%; /* #00FFFF */
+    --accent-foreground: 216 33% 8%; /* background */
 
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%; /* Keeping old value */
+    --destructive-foreground: 210 40% 98%; /* Keeping old value */
 
-    --border: 220 13% 18%;
-    --input: 220 13% 14%;
-    --ring: 217 91% 60%;
+    --border: 216 13% 21%; /* #30363D */
+    --input: 216 13% 21%;
+    --ring: 200 100% 50%; /* primary */
 
     --radius: 0.75rem;
 
@@ -121,5 +123,6 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
   }
 }

@@ -73,7 +73,7 @@ export function KPIStrip() {
           </div>
           
           <div className="mt-3">
-            <div className="text-2xl font-bold text-card-foreground">
+            <div className="text-xl md:text-2xl font-bold text-card-foreground">
               {kpi.value}
             </div>
             <div className="text-sm text-muted-foreground">

@@ -21,19 +21,14 @@ const externalLinks = [
   { name: "Shannon Explorer", href: "https://shannon-explorer.somnia.network", icon: ExternalLink },
 ];
 
-export function Sidebar() {
+export function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
   return (
-    <aside className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col h-screen">
+    <aside className={`fixed top-0 left-0 h-full z-30 transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} w-64 bg-sidebar border-r border-sidebar-border flex flex-col`}>
       {/* Logo Section */}
       <div className="p-6 border-b border-sidebar-border">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-primary rounded-lg flex items-center justify-center">
-            <Zap className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <div>
-            <h2 className="text-xl font-bold text-sidebar-foreground">Reflex</h2>
-            <p className="text-xs text-muted-foreground">Mission Control</p>
-          </div>
+        <div className="flex items-center gap-x-3">
+          <img src="/logo-mark.svg" alt="Reflex Protocol" className="h-8 w-8" />
+          <span className="text-xl font-bold text-text-primary">Reflex</span>
         </div>
       </div>
 

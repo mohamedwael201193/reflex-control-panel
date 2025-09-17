@@ -1,33 +1,22 @@
-"use client";
+'use client';
 
 import { useAuctionSocket } from "@/hooks/useAuctionSocket";
+import { useAuctionStore } from "@/stores/auctionStore";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { 
-  Clock, 
-  TrendingUp, 
-  User, 
-  Activity,
-  Eye,
-  Zap
-} from "lucide-react";
+import { Clock, TrendingUp, User, Activity, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 
 function formatTimeRemaining(endTime: number): string {
   const now = Date.now();
   const remaining = Math.max(0, endTime - now);
   const seconds = Math.floor(remaining / 1000);
-  const minutes = Math.floor(seconds / 60);
-  const hours = Math.floor(minutes / 60);
-
-  if (hours > 0) return `${hours}h ${minutes % 60}m`;
-  if (minutes > 0) return `${minutes}m ${seconds % 60}s`;
   return `${seconds}s`;
 }
 
 export function AuctionList() {
-  const { auctions } = useAuctionSocket();
+  useAuctionSocket(); // Connect to the socket
+  const auctions = useAuctionStore((state) => state.auctions);
   const [currentTime, setCurrentTime] = useState(Date.now());
 
   // Update time every second for countdown
@@ -58,10 +47,10 @@ export function AuctionList() {
       </div>
 
       {/* Header */}
-      <div className="grid grid-cols-5 gap-4 text-sm font-medium text-muted-foreground mb-4 pb-3 border-b border-border">
+      <div className="hidden md:grid md:grid-cols-4 md:gap-4 text-sm font-medium text-muted-foreground mb-4 pb-3 border-b border-border">
         <div className="flex items-center gap-2">
           <TrendingUp className="w-4 h-4" />
-          Opportunity
+          Bundle ID
         </div>
         <div className="flex items-center gap-2">
           <Zap className="w-4 h-4" />
@@ -75,7 +64,6 @@ export function AuctionList() {
           <Clock className="w-4 h-4" />
           Time Remaining
         </div>
-        <div>Actions</div>
       </div>
 
       {/* Auctions */}
@@ -89,53 +77,39 @@ export function AuctionList() {
         ) : (
           auctions.map((auction) => {
             const timeRemaining = formatTimeRemaining(auction.endTime);
-            const isUrgent = (auction.endTime - currentTime) < 30000; // Less than 30 seconds
+            const isUrgent = (auction.endTime - currentTime) < 1000; // Less than 1 second
 
             return (
               <div
                 key={auction.bundleId}
-                className="grid grid-cols-5 gap-4 items-center p-4 bg-card rounded-lg border border-border hover:border-primary/50 transition-all duration-200"
+                className="p-4 bg-card rounded-lg border border-border hover:border-primary/50 transition-all duration-200 grid grid-cols-2 md:grid-cols-4 gap-4 items-center"
               >
-                <div>
-                  <div className="font-medium text-card-foreground">{auction.opportunity}</div>
-                  {auction.volume && (
-                    <div className="text-sm text-muted-foreground">
-                      Vol: ${(auction.volume / 1000).toFixed(0)}k
-                    </div>
-                  )}
+                {/* Bundle ID */}
+                <div className="col-span-2 md:col-span-1">
+                    <div className="text-sm text-muted-foreground md:hidden">Bundle ID</div>
+                    <div className="font-mono text-sm text-card-foreground">{auction.bundleId.slice(0, 8)}...</div>
                 </div>
 
+                {/* Top Bid */}
                 <div>
-                  <div className="font-mono text-lg font-bold text-success">
-                    {auction.topBid.toFixed(4)}
-                  </div>
-                  {auction.gasPrice && (
-                    <div className="text-sm text-muted-foreground">
-                      {auction.gasPrice} gwei
-                    </div>
-                  )}
+                    <div className="text-sm text-muted-foreground md:hidden">Top Bid</div>
+                    <div className="font-mono text-lg font-bold text-success">{auction.topBid}</div>
                 </div>
 
-                <div>
-                  <div className="font-mono text-sm text-card-foreground">
-                    {auction.leadingSearcher.slice(0, 6)}...{auction.leadingSearcher.slice(-4)}
-                  </div>
+                {/* Leading Searcher (Desktop only) */}
+                <div className="hidden md:block">
+                    <div className="font-mono text-sm text-card-foreground">{auction.leadingSearcher.slice(0, 6)}...{auction.leadingSearcher.slice(-4)}</div>
                 </div>
 
+                {/* Time Remaining */}
                 <div>
-                  <Badge 
-                    variant={isUrgent ? "destructive" : "secondary"}
-                    className={`font-mono ${isUrgent ? "animate-pulse" : ""}`}
-                  >
-                    {timeRemaining}
-                  </Badge>
-                </div>
-
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="gap-2">
-                    <Eye className="w-3 h-3" />
-                    Watch
-                  </Button>
+                    <div className="text-sm text-muted-foreground md:hidden">Time Left</div>
+                    <Badge
+                      variant={isUrgent ? "destructive" : "secondary"}
+                      className={`font-mono ${isUrgent ? "animate-pulse" : ""}`}
+                    >
+                      {timeRemaining}
+                    </Badge>
                 </div>
               </div>
             );

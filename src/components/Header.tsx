@@ -1,5 +1,3 @@
-"use client";
-
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 import { injected } from "wagmi/connectors";
 import { Button } from "@/components/ui/button";
@@ -9,11 +7,12 @@ import {
   WifiOff, 
   Wifi,
   Bell,
-  Settings
+  Settings,
+  Menu
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
-export function Header() {
+export function Header({ onMenuClick }: { onMenuClick: () => void }) {
   const { address, isConnected, isConnecting } = useAccount();
   const { connect } = useConnect();
   const { disconnect } = useDisconnect();
@@ -51,8 +50,19 @@ export function Header() {
   return (
     <header className="bg-card border-b border-border p-4">
       <div className="flex items-center justify-between">
-        {/* Left side - Title */}
-        <div>
+        {/* Mobile Menu Button */}
+        <Button
+          variant="outline"
+          size="icon"
+          className="lg:hidden"
+          onClick={onMenuClick}
+        >
+          <Menu className="h-6 w-6" />
+          <span className="sr-only">Open sidebar</span>
+        </Button>
+
+        {/* Left side - Title (hidden on mobile) */}
+        <div className="hidden lg:block">
           <h1 className="text-2xl font-bold text-card-foreground">
             Reflex Protocol
           </h1>
