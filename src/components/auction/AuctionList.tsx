@@ -1,6 +1,6 @@
 "use client";
 
-import { useAuctionStore } from "@/stores/auctionStore";
+import { useAuctionSocket } from "@/hooks/useAuctionSocket";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,7 @@ function formatTimeRemaining(endTime: number): string {
 }
 
 export function AuctionList() {
-  const { auctions } = useAuctionStore();
+  const { auctions } = useAuctionSocket();
   const [currentTime, setCurrentTime] = useState(Date.now());
 
   // Update time every second for countdown
