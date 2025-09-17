@@ -1,16 +1,18 @@
 import { useEffect } from 'react';
-import { useAuctionStore } from '../stores/auctionStore';
+import { useAuctionStore } from '@/stores/auctionStore';
 
-const WS_URL = 'ws://localhost:8080';
+// The live server URL from Render
+const LIVE_SERVER_URL = 'wss://reflex-hackathon-server.onrender.com';
 
-export const useAuctionSocket = () => {
+export function useAuctionSocket() {
   const setAuctions = useAuctionStore((state) => state.setAuctions);
 
   useEffect(() => {
-    const ws = new WebSocket(WS_URL);
+    // This line connects to your live server
+    const ws = new WebSocket(LIVE_SERVER_URL);
 
     ws.onopen = () => {
-      console.log('Connected to auction socket');
+      console.log('Connected to LIVE auction socket');
     };
 
     ws.onmessage = (event) => {
@@ -20,7 +22,7 @@ export const useAuctionSocket = () => {
           setAuctions(data.payload);
         }
       } catch (error) {
-        console.error('Error parsing auction data:', error);
+        console.error('Error parsing WebSocket message:', error);
       }
     };
 
@@ -32,8 +34,9 @@ export const useAuctionSocket = () => {
       console.error('Auction socket error:', error);
     };
 
+    // Cleanup function to close the connection when the component unmounts
     return () => {
       ws.close();
     };
-  }, [setAuctions]);
-};
+  }, [setAuctions]); // Dependency array ensures this effect runs only once
+}

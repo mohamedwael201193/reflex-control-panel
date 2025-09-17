@@ -1,0 +1,17 @@
+{
+  "name": "reflex-server",
+  "version": "1.0.0",
+  "description": "WebSocket server for Reflex Protocol",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "uuid": "^10.0.0",
+    "ws": "^8.18.0"
+  }
+}
