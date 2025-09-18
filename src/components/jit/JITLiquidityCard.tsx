@@ -31,7 +31,7 @@ export function JITLiquidityCard() {
   const [isLoading, setIsLoading] = useState(false);
   // To track which button is loading
   const [loadingType, setLoadingType] = useState<
-    "approve" | "deposit" | "withdraw" | "mint" | null
+    "approve" | "deposit" | "withdraw" | null
   >(null);
 
   // Reads the user's deposited balance in the vault
@@ -63,7 +63,7 @@ export function JITLiquidityCard() {
 
   // A single, robust handler for all blockchain transactions
   const handleTransaction = async (
-    type: "approve" | "deposit" | "withdraw" | "mint",
+    type: "approve" | "deposit" | "withdraw",
     contractConfig: any,
     toastMessages: { success: string; error: string }
   ) => {
@@ -117,17 +117,7 @@ export function JITLiquidityCard() {
 
   // --- Transaction Functions ---
 
-  const onMint = () =>
-    handleTransaction(
-      "mint",
-      {
-        address: ADDRESSES.underlying,
-        abi: TOKEN_ABI,
-        functionName: "mint",
-        args: [address!, parseEther("100")], // Mint 100 tokens
-      },
-      { success: "Tokens Minted!", error: "Mint Failed" }
-    );
+  
 
   const onApprove = () =>
     handleTransaction(
@@ -230,17 +220,12 @@ export function JITLiquidityCard() {
         <div className="space-y-4">
           {/* Faucet Button */}
           <Button
-            onClick={onMint}
-            disabled={isLoading}
+            onClick={() => window.open('https://testnet.somnia.network/faucet', '_blank')}
             variant="secondary"
             className="w-full gap-2"
           >
-            {isLoading && loadingType === "mint" ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <Zap className="w-4 h-4" />
-            )}
-            Get 100 Test STT
+            <Zap className="w-4 h-4" />
+            Get Testnet Tokens
           </Button>
           
           <div className="border-t border-border my-4"></div>
