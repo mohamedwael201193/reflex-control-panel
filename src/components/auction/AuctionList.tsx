@@ -31,10 +31,20 @@ export function AuctionList() {
     return () => clearInterval(interval);
   }, []);
 
-  const auctionVariants = {
-    initial: { opacity: 0, x: -50 },
-    animate: { opacity: 1, x: 0, transition: { duration: isMobile ? 0.2 : 0.4 } },
-    exit: { opacity: 0, transition: { duration: isMobile ? 0.1 : 0.2 } },
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0 },
   };
 
   return (
@@ -76,9 +86,13 @@ export function AuctionList() {
       </div>
 
       {/* Auctions */}
-      <div className="relative flex-1 overflow-y-auto pr-2">
-        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-card to-transparent pointer-events-none"></div>
-        <div className="space-y-3">
+      <motion.div
+        className="flex-1 overflow-y-auto no-scrollbar [mask-image:linear-gradient(to_bottom,black_80%,transparent)]"
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+      >
+        <div className="space-y-3 pr-2">
           <AnimatePresence>
             {auctions.length === 0 ? (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -96,10 +110,7 @@ export function AuctionList() {
                 return (
                   <motion.div
                     key={auction.bundleId}
-                    variants={auctionVariants}
-                    initial="initial"
-                    animate="animate"
-                    exit="exit"
+                    variants={itemVariants}
                     layout
                     className="p-4 bg-card rounded-lg border border-border hover:border-primary/50 transition-all duration-200 grid grid-cols-2 md:grid-cols-4 gap-4 items-center"
                   >
@@ -136,7 +147,7 @@ export function AuctionList() {
             )}
           </AnimatePresence>
         </div>
-      </div>
+      </motion.div>
     </Card>
   );
 }
