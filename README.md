@@ -78,11 +78,11 @@ Reflex consists of on-chain smart contracts for logic and settlement, and off-ch
 Follow these simple steps to test the full protocol:
 
 1.  **Connect to Somnia:** Ensure your MetaMask wallet is connected to the **Somnia Testnet (Shannon)**.
-    *   **Network Name:** `Somnia Shannon Testnet`
-    *   **RPC URL:** `https://testnet-rpc.somnia.network`
+    *   **Network Name:** `Somnia Testnet (Shannon)`
+    *   **RPC URL:** `https://dream-rpc.somnia.network/`
     *   **Chain ID:** `50312`
-    *   **Currency Symbol:** `tCORE`
-2.  **Get Tokens:** Visit the [**Live Demo**](https://reflex-control-panel.vercel.app/) and click the **"Get Testnet Tokens"** button. This will grant you 100 STT tokens to use in the protocol.
+    *   **Currency Symbol:** `STT`
+2.  **Get Tokens:** Visit the [**Live Demo**](https://reflex-control-panel.vercel.app/) and click the "Get Testnet Tokens" button. This will open the official Somnia faucet in a new tab where you can request STT tokens for testing.
 3.  **Provide Liquidity:** Use the "Approve" and "Deposit" functions in the JIT Liquidity Vault card to provide liquidity and start earning yield.
 4.  **Observe:** Watch the "Live Auctions" feed to see MEV opportunities being auctioned and settled in real time.
 
