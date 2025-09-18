@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Clock, TrendingUp, User, Activity, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 function formatTimeRemaining(endTime: number): string {
   const now = Date.now();

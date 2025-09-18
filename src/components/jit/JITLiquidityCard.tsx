@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { motion, animate } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   Wallet,
   TrendingUp,
@@ -22,6 +23,11 @@ import { VAULT_ABI, TOKEN_ABI, ADDRESSES } from "@/lib/contracts";
 
 // Utility function for a brief delay
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const formatBalance = (balance: bigint | undefined) => {
+  if (balance === undefined) return "0.0000";
+  return parseFloat(formatEther(balance)).toFixed(4);
+};
 
 // AnimatedBalance component for count-up/down animation
 function AnimatedBalance({ value }: { value: bigint | undefined }) {
@@ -191,11 +197,6 @@ export function JITLiquidityCard() {
     );
 
   // --- UI Logic ---
-
-  const formatBalance = (balance: bigint | undefined) => {
-    if (balance === undefined) return "0.0000";
-    return parseFloat(formatEther(balance)).toFixed(4);
-  };
 
   const hasSufficientAllowance =
     allowance !== undefined &&
