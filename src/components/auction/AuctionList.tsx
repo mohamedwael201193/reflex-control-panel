@@ -38,7 +38,7 @@ export function AuctionList() {
   };
 
   return (
-    <Card className="p-6 bg-gradient-surface border-border">
+    <Card className="p-6 bg-gradient-surface border-border h-[50vh] flex flex-col">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-primary/10 rounded-lg">
@@ -49,8 +49,8 @@ export function AuctionList() {
             <p className="text-sm text-muted-foreground">Real-time MEV opportunities</p>
           </div>
         </div>
-        <Badge variant="secondary" className="gap-2">
-          <div className="w-2 h-2 bg-success rounded-full animate-pulse"></div>
+        <Badge variant="secondary" className="gap-2 animate-pulse">
+          <div className="w-2 h-2 bg-success rounded-full"></div>
           {auctions.length} Active
         </Badge>
       </div>
@@ -76,63 +76,66 @@ export function AuctionList() {
       </div>
 
       {/* Auctions */}
-      <div className="space-y-3">
-        <AnimatePresence>
-          {auctions.length === 0 ? (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              <div className="text-center py-12">
-                <Activity className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h4 className="text-lg font-medium text-card-foreground mb-2">No Active Auctions</h4>
-                <p className="text-muted-foreground">New opportunities will appear here automatically</p>
-              </div>
-            </motion.div>
-          ) : (
-            auctions.map((auction) => {
-              const timeRemaining = formatTimeRemaining(auction.endTime);
-              const isUrgent = (auction.endTime - currentTime) < 1000; // Less than 1 second
+      <div className="relative flex-1 overflow-y-auto pr-2">
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-card to-transparent pointer-events-none"></div>
+        <div className="space-y-3">
+          <AnimatePresence>
+            {auctions.length === 0 ? (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <div className="text-center py-12">
+                  <Activity className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <h4 className="text-lg font-medium text-card-foreground mb-2">No Active Auctions</h4>
+                  <p className="text-muted-foreground">New opportunities will appear here automatically</p>
+                </div>
+              </motion.div>
+            ) : (
+              auctions.map((auction) => {
+                const timeRemaining = formatTimeRemaining(auction.endTime);
+                const isUrgent = (auction.endTime - currentTime) < 1000; // Less than 1 second
 
-              return (
-                <motion.div
-                  key={auction.bundleId}
-                  variants={auctionVariants}
-                  initial="initial"
-                  animate="animate"
-                  exit="exit"
-                  layout
-                  className="p-4 bg-card rounded-lg border border-border hover:border-primary/50 transition-all duration-200 grid grid-cols-2 md:grid-cols-4 gap-4 items-center"
-                >
-                  {/* Bundle ID */}
-                  <div className="col-span-2 md:col-span-1">
-                      <div className="text-sm text-muted-foreground md:hidden">Bundle ID</div>
-                      <div className="font-mono text-sm text-card-foreground">{auction.bundleId.slice(0, 8)}...</div>
-                  </div>
+                return (
+                  <motion.div
+                    key={auction.bundleId}
+                    variants={auctionVariants}
+                    initial="initial"
+                    animate="animate"
+                    exit="exit"
+                    layout
+                    className="p-4 bg-card rounded-lg border border-border hover:border-primary/50 transition-all duration-200 grid grid-cols-2 md:grid-cols-4 gap-4 items-center"
+                  >
+                    {/* Bundle ID */}
+                    <div className="col-span-2 md:col-span-1">
+                        <div className="text-sm text-muted-foreground md:hidden">Bundle ID</div>
+                        <div className="font-mono text-sm text-card-foreground">{auction.bundleId.slice(0, 8)}...</div>
+                    </div>
 
-                  {/* Top Bid */}
-                  <div>
-                      <div className="text-sm text-muted-foreground md:hidden">Top Bid</div>
-                      <div className="font-mono text-lg font-bold text-success">{auction.topBid}</div>
-                  </div>
+                    {/* Top Bid */}
+                    <div>
+                        <div className="text-sm text-muted-foreground md:hidden">Top Bid</div>
+                        <div className="font-mono text-lg font-bold text-success">{auction.topBid}</div>
+                    </div>
 
-                  {/* Leading Searcher (Desktop only) */}
-                  <div className="hidden md:block">
-                      <div className="font-mono text-sm text-card-foreground">{auction.leadingSearcher.slice(0, 6)}...{auction.leadingSearcher.slice(-4)}</div>
-                  </div>
+                    {/* Leading Searcher (Desktop only) */}
+                    <div className="hidden md:block">
+                        <div className="font-mono text-sm text-card-foreground">{auction.leadingSearcher.slice(0, 6)}...{auction.leadingSearcher.slice(-4)}</div>
+                    </div>
 
-                  {/* Time Remaining */}
-                  <div>
-                      <div className="text-sm text-muted-foreground md:hidden">Time Left</div>
-                      <Badge
-                        variant={isUrgent ? "destructive" : "secondary"}
-                        className={`font-mono ${isUrgent ? "animate-pulse" : ""}`}
-                      >
-                        {timeRemaining}
-                      </Badge>
-                  </div>
-                </motion.div>
-              );
-            })
-          )}
-        </AnimatePresence>
+                    {/* Time Remaining */}
+                    <div>
+                        <div className="text-sm text-muted-foreground md:hidden">Time Left</div>
+                        <Badge
+                          variant={isUrgent ? "destructive" : "secondary"}
+                          className={`font-mono ${isUrgent ? "animate-pulse" : ""}`}
+                        >
+                          {timeRemaining}
+                        </Badge>
+                    </div>
+                  </motion.div>
+                );
+              })
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </Card>
   );
