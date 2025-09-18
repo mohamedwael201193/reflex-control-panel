@@ -1,5 +1,7 @@
 import { useAuctionStore } from "@/stores/auctionStore";
 import { Card } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { 
   TrendingUp, 
   Activity, 
@@ -11,11 +13,12 @@ import {
 
 export function KPIStrip() {
   const { kpis } = useAuctionStore();
+  const isMobile = useIsMobile();
 
   const kpiItems = [
     {
       label: "Total Volume",
-      value: `$${(kpis.totalVolume / 1000000).toFixed(2)}M`,
+      value: `${(kpis.totalVolume / 1000000).toFixed(2)}M`,
       icon: DollarSign,
       change: "+12.4%",
       positive: true
@@ -57,30 +60,52 @@ export function KPIStrip() {
     }
   ];
 
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.1,
+        duration: isMobile ? 0.3 : 0.5,
+        ease: "easeOut"
+      }
+    })
+  };
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-6">
       {kpiItems.map((kpi, index) => (
-        <Card key={index} className="p-4 bg-gradient-surface border-border hover:border-primary/50 transition-all duration-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="p-2 bg-primary/10 rounded-lg">
-                <kpi.icon className="w-4 h-4 text-primary" />
+        <motion.div
+          key={index}
+          custom={index}
+          variants={cardVariants}
+          initial="hidden"
+          animate="visible"
+          whileHover={{ scale: 1.05 }}
+        >
+          <Card className="p-4 bg-gradient-surface border-border hover:border-primary/50 transition-all duration-200 h-full">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="p-2 bg-primary/10 rounded-lg">
+                  <kpi.icon className="w-4 h-4 text-primary" />
+                </div>
+              </div>
+              <div className={`text-xs font-medium ${kpi.positive ? "text-success" : "text-destructive"}`}>
+                {kpi.change}
               </div>
             </div>
-            <div className={`text-xs font-medium ${kpi.positive ? "text-success" : "text-destructive"}`}>
-              {kpi.change}
+            
+            <div className="mt-3">
+              <div className="text-xl md:text-2xl font-bold text-card-foreground">
+                {kpi.value}
+              </div>
+              <div className="text-sm text-muted-foreground">
+                {kpi.label}
+              </div>
             </div>
-          </div>
-          
-          <div className="mt-3">
-            <div className="text-xl md:text-2xl font-bold text-card-foreground">
-              {kpi.value}
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {kpi.label}
-            </div>
-          </div>
-        </Card>
+          </Card>
+        </motion.div>
       ))}
     </div>
   );

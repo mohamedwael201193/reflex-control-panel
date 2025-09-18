@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAccount, useWriteContract, useReadContract } from "wagmi";
 import { parseEther, formatEther } from "viem";
 import { Card } from "@/components/ui/card";
@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { motion, animate } from "framer-motion";
 import {
   Wallet,
   TrendingUp,
@@ -21,6 +22,42 @@ import { VAULT_ABI, TOKEN_ABI, ADDRESSES } from "@/lib/contracts";
 
 // Utility function for a brief delay
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// AnimatedBalance component for count-up/down animation
+function AnimatedBalance({ value }: { value: bigint | undefined }) {
+  const nodeRef = useRef<HTMLDivElement>(null);
+  const previousValueRef = useRef(value);
+  const isMobile = useIsMobile();
+
+  useEffect(() => {
+    const node = nodeRef.current;
+    if (!node) return;
+
+    const previousValue = previousValueRef.current ?? 0n;
+    const currentValue = value ?? 0n;
+
+    if (previousValue !== currentValue) {
+      const controls = animate(parseFloat(formatEther(previousValue)), parseFloat(formatEther(currentValue)), {
+        duration: isMobile ? 0.3 : 0.5,
+        onUpdate(latest) {
+          node.textContent = latest.toFixed(4);
+        },
+      });
+
+      // Trigger flash animation
+      node.classList.add('text-green-400');
+      setTimeout(() => {
+        node.classList.remove('text-green-400');
+      }, 500);
+
+      previousValueRef.current = currentValue;
+      return () => controls.stop();
+    }
+  }, [value, isMobile]);
+
+  return <div ref={nodeRef}>{formatBalance(value)}</div>;
+}
+
 
 export function JITLiquidityCard() {
   const { address, isConnected } = useAccount();
@@ -117,8 +154,6 @@ export function JITLiquidityCard() {
 
   // --- Transaction Functions ---
 
-  
-
   const onApprove = () =>
     handleTransaction(
       "approve",
@@ -195,7 +230,7 @@ export function JITLiquidityCard() {
             </Badge>
           </div>
           <div className="text-2xl font-bold font-mono text-text-primary">
-            {formatBalance(vaultBalance)}
+            <AnimatedBalance value={vaultBalance} />
           </div>
         </div>
         <div className="bg-background p-4 rounded-lg border border-border">
@@ -208,9 +243,7 @@ export function JITLiquidityCard() {
             </Badge>
           </div>
           <div className="text-xl font-bold font-mono text-text-primary">
-            {totalDeposits !== undefined
-              ? `${formatBalance(totalDeposits)}`
-              : "Loading..."}
+            <AnimatedBalance value={totalDeposits} />
           </div>
         </div>
       </div>

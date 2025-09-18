@@ -64,7 +64,7 @@ export function Header({ onMenuClick }: { onMenuClick: () => void }) {
         {/* Left side - Title (hidden on mobile) */}
         <div className="hidden lg:block">
           <h1 className="text-2xl font-bold text-card-foreground">
-            Reflex Protocol
+            Reflex by Somnia
           </h1>
           <p className="text-sm text-muted-foreground">
             JIT Liquidity & MEV Auctions on Somnia

@@ -27,7 +27,7 @@ export function Sidebar({ isSidebarOpen }: { isSidebarOpen: boolean }) {
       {/* Logo Section */}
       <div className="p-6 border-b border-sidebar-border">
         <div className="flex items-center gap-x-3">
-          <img src="/logo-mark.svg" alt="Reflex Protocol" className="h-8 w-8" />
+          <img src="/logo-mark.svg" alt="Reflex by Somnia" className="h-8 w-8" />
           <span className="text-xl font-bold text-text-primary">Reflex</span>
         </div>
       </div>

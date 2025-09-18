@@ -9,5 +9,6 @@
     <path fill="url(#logoGradient)" d="M50 0 C22.38 0 0 22.38 0 50 C0 77.62 22.38 100 50 100 C77.62 100 100 77.62 100 50 C100 22.38 77.62 0 50 0 Z M50 90 C27.91 90 10 72.09 10 50 C10 27.91 27.91 10 50 10 C72.09 10 90 27.91 90 50 C90 72.09 72.09 90 50 90 Z" />
     <path fill="#00FFFF" d="M55 25 L40 55 L50 55 L45 75 L60 45 L50 45 L55 25 Z" />
   </g>
-  <text x="110" y="60" font-family="Inter, Poppins, sans-serif" font-size="30" fill="#F0F6FC">Reflex</text>
+    <text x="110" y="55" font-family="Inter, Poppins, sans-serif" font-size="30" fill="#F0F6FC" font-weight="bold">Reflex</text>
+  <text x="110" y="75" font-family="Inter, Poppins, sans-serif" font-size="12" fill="#8B949E">on Somnia</text>
 </svg>
